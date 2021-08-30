@@ -1,0 +1,140 @@
+{% extends 'base.html' %}
+{% block title %} Add Employee {% endblock title %}
+
+{% block content %}
+
+<body data-ng-app="app">
+<!-- Header -->
+<div class="header pb-8 pt-5 pt-lg-8 d-flex align-items-center">
+    <!-- Mask -->
+    <span class="mask bg-gradient-default opacity-8"></span>
+    <!-- Header container -->
+
+</div>
+
+<div class="container-fluid mt--9" data-ng-controller="MainController">
+
+    <div class="row">
+        <div class="col-xl-4 order-xl-2 mb-5 mb-xl-0">
+
+        </div>
+        <div class="col-xl-12 order-xl-1">
+            <div class="card bg-success shadow">
+                <div class="card-header bg-white border-0">
+                    <div class="row align-items-center">
+                        <div class="col-8">
+                            <h3 class="mb-0">Add Employee</h3>
+                        </div>
+                        <div class="col-4 text-right">
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    {% if messages %}
+                    {% for message in messages %}
+                    <div class="alert {% if message.tags == 'error' %}alert-warning {% else %} alert-{{ message.tags }}{% endif %}"
+                        role="alert">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                        {{message}}
+                    </div>
+                    {% endfor %}
+                    {% endif %}
+                    <form ng-submit="submit()">{% csrf_token %}
+
+                        <h6 class="heading-small text-white font-italic mb-4">Employee information</h6>
+
+                        <div class="row text-white">
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                    <label class="form-control-label">User Name*</label>
+                                    <input type="text" class="form-control form-control-alternative"
+                                        value="{{username}}" name="username" ng-model="employee.username">
+                                </div>
+                            </div>
+
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                    <label class="form-control-label">First Name*</label>
+                                    <input type="text" class="form-control form-control-alternative"
+                                        value="{{firstname}}" name="firstname" ng-model="employee.firstname">
+                                </div>
+                            </div>
+
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                    <label class="form-control-label">Last Name*</label>
+                                    <input type="text" class="form-control form-control-alternative"
+                                        value="{{lastname}}" name="lastname" ng-model="employee.lastname">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row text-white">
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                    <label class="form-control-label">Email*</label>
+                                    <input type="text" class="form-control form-control-alternative"
+                                        value="{{email}}" name="email" ng-model="employee.email">
+                                </div>
+                            </div>
+
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                    <label class="form-control-label">Mobile*</label>
+                                    <input type="text" class="form-control form-control-alternative"
+                                        value="{{mobile}}" name="mobile" ng-model="employee.mobile">
+                                </div>
+                            </div>
+
+                            
+                        </div>
+
+                        
+                        <button type="submit" class="btn btn-info btn-sm">Save</button>
+                    </form>
+                   
+                   
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+</body>
+
+{% endblock content %}
+
+<!-- Specific JS goes HERE -->
+{% block javascripts %}
+<script>
+    var myApp = angular.module('app', [], function($httpProvider){
+      $httpProvider.defaults.xsrfCookieName = 'csrftoken';
+      $httpProvider.defaults.xsrfHeaderName = 'X-CSRFToken';
+    });
+
+    myApp.controller("MainController", function ($scope, $http) {
+
+        $scope.submit = function() {
+            var postReq = {
+                method: 'POST',
+                url: '/add/employee/',
+                data: $scope.employee,
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            };
+
+            $http(postReq).then(function (response) {
+                if (response.data.saved) {
+                }
+               
+            }, function (error) {
+            });
+        }
+
+    });
+
+</script>
+{% endblock javascripts %}

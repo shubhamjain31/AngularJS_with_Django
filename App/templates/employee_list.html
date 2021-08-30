@@ -1,0 +1,169 @@
+{% extends 'base.html' %}
+{% block title %} Show Employees {% endblock title %}
+
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+
+<!-- Header -->
+<div class="header pb-8 pt-5 pt-lg-8 d-flex align-items-center">
+    <!-- Mask -->
+    <span class="mask bg-gradient-default opacity-8"></span>
+</div>
+
+<div class="container-fluid mt--9 my-3">
+
+    <div class="row">
+
+        <div class="col-xl-12 order-xl-1">
+            <div class="card bg-success shadow">
+                <div class="card-header bg-white border-0">
+                    <div class="row align-items-center">
+                        <div class="col-6">
+                            <h3 class="mb-0">All Employees</h3>
+                        </div>
+                        <div class="col-6 text-right">
+                          <a href="{% url 'employee_add' %}" class="btn btn-warning btn-sm">Add Employee</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    {% if messages %}
+                    {% for message in messages %}
+                    <div class="alert {% if message.tags == 'error' %}alert-warning {% else %} alert-{{ message.tags }}{% endif %}"
+                        role="alert">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                        {{message}}
+                    </div>
+                    {% endfor %}
+                    {% endif %}
+                    
+                </div>
+
+               
+
+                <div class="table-responsive px-3">
+                  <table class="table align-items-center table-flush table-sm" id="purchased_did" style="width: 100%;">
+                      <thead class="thead-light">
+                          <tr>
+                              <th scope="col">Sr no.</th>
+                              <th scope="col">Fullname</th>
+                              <th scope="col">First Name</th>
+                              <th scope="col">Last Name</th>
+                              <th scope="col">Email</th>
+                              <th scope="col">Mobile</th>
+                              <th scope="col">Code</th>
+                              <th scope="col">Date</th>
+                              <th scope="col">Action</th>
+                          </tr>
+                      </thead>
+
+                      {% if not all_taxes %}
+                      <tbody>
+                          <tr>
+                            <th></th>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td>
+                              No data available in table.
+                            </td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                          </tr>
+                      </tbody>
+                      {% else %}
+                      <tbody>
+                          {% for record in all_employees %}
+                          <tr id="dids" style="display:''">
+                              <th scope="row">
+                                {{ forloop.counter }}
+                              </th>
+                              
+                              <td>
+                                {{record.user.username}}
+                              </td>
+                              <td style="text-transform:lowercase">
+                                {{record.user.email}}
+                              </td>
+                              <td>
+                                {{record.phone|default:""}}
+                              </td>
+                              <td class="text-center">
+                                {{record.designation|default:"--"}}
+                              </td>
+                              <td class="text-center">
+                                  
+                              </td>
+                              <td class="text-center">
+                                
+                              </td>
+                              <td>
+                                
+                          </tr>
+                          {% endfor %}
+                          <!-- <tr id="noRecordTR" style="display:none" class="text-center font-weight-bold"> 
+                            <td id="noRecordTD">No Record Found</td>                              
+                          </tr> -->
+                          <!-- <tr id="noRecordTR" style="display:none" class="font-weight-bold">
+                            <th scope="row">
+                            </th>
+                            <td></td>
+                            <td id="noRecordTD">No Record Found</td>
+                            <td></td>
+                        </tr> -->
+                      </tbody>
+                      {% endif %}
+                  </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+aria-hidden="true">
+<div class="modal-dialog" role="document">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h5 class="modal-title" id="exampleModalLabel">Delete User</h5>
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      Are You Sure You Want To Delete <b><span id="modal_body"></span></b>?
+    </div>
+    <div class="modal-footer">
+      <a href="" class="btn btn-secondary btn-sm" data-dismiss="modal">Cancel</a>
+      <a href="" id="delete_button" class="btn btn-primary btn-sm">Delete</a>
+    </div>
+  </div>
+</div>
+</div>
+
+</div>
+
+{% endblock content %}
+
+<!-- Specific JS goes HERE -->
+{% block javascripts %}
+<script>
+     $(".remove").on('click', function () {
+    $("#modal_body").text(
+      $(this).attr("data-href")
+    );
+
+    $("#delete_button").attr(
+      "href",
+      $(this).attr("src")
+    );
+    $('#exampleModal').modal('show');
+  })  
+
+</script>
+{% endblock javascripts %}
