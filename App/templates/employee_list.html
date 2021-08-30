@@ -1,17 +1,19 @@
 {% extends 'base.html' %}
+
 {% block title %} Show Employees {% endblock title %}
 
 {% block stylesheets %}{% endblock stylesheets %}
 
 {% block content %}
 
+<body data-ng-app="app">
 <!-- Header -->
 <div class="header pb-8 pt-5 pt-lg-8 d-flex align-items-center">
     <!-- Mask -->
     <span class="mask bg-gradient-default opacity-8"></span>
 </div>
 
-<div class="container-fluid mt--9 my-3">
+<div class="container-fluid mt--9 my-3" data-ng-controller="MainController">
 
     <div class="row">
 
@@ -60,66 +62,46 @@
                               <th scope="col">Action</th>
                           </tr>
                       </thead>
-
-                      {% if not all_employees %}
-                      <tbody class="text-center">
-                          <tr>
-                            <th></th>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td>
-                              No data available in table.
-                            </td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                          </tr>
-                      </tbody>
-                      {% else %}
+                      
                       <tbody class="text-center text-white">
-                          {% for record in all_employees %}
-                          <tr>
+                          <tr ng-repeat="record in all_employees">
                               <th scope="row">
-                                {{ forloop.counter }}
+                                [[$index + 1]]    <!-- counter -->
                               </th>
                               
                               <td>
-                                {{record.fullname}}
+                                [[record.fullname]]
                               </td>
                               <td>
-                                {{record.first_name}}
+                                [[record.first_name]]
                               </td>
                               <td>
-                                {{record.last_name}}
+                                [[record.last_name]]
                               </td>
                               <td>
-                                {{record.email}}
+                                [[record.email]]
                               </td>
                               <td>
-                                {{record.mobile}}
+                                [[record.mobile]]
                               </td>
                               <td>
-                                  {{record.emp_code}}
+                                  [[record.emp_code]]
                               </td>
                               <td>
-                                  {{record.position}}
+                                  [[record.position__title]]
                               </td>
                               <td>
-                                {{record.joining_date|date:"m-d-Y"}}<br>
-                                {{record.joining_date|date:"h:i A"}}
+                                [[record.joining_date| date:'shortDate']]<br>
+                                [[record.joining_date|date:"shortTime"]]
                               </td>
                               <td>
-                                <a type="button" class="btn btn-info btn-sm" href="{% url 'employee_edit' record.id %}">Edit</a>&nbsp;&nbsp;&nbsp;&nbsp;
+                                <a type="button" class="btn btn-info btn-sm" href="/edit/employee/[[record.id]]/">Edit</a>&nbsp;&nbsp;&nbsp;&nbsp;
                                 <button type="button" class="btn btn-danger btn-sm">Delete</button>
                               </td>
                                 
                           </tr>
-                          {% endfor %}
                         
                       </tbody>
-                      {% endif %}
                   </table>
                 </div>
             </div>
@@ -148,7 +130,9 @@
   </div>
 </div>
 
+{{ all_employees|json_script:"all_employees" }}
 </div>
+</body>
 
 {% endblock content %}
 
@@ -166,6 +150,7 @@
     );
     $('#employeeModal').modal('show');
   })  
-
 </script>
+
+<script src="/static/js/employee_list.js"></script>
 {% endblock javascripts %}

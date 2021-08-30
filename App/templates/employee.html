@@ -1,5 +1,12 @@
 {% extends 'base.html' %}
-{% block title %} Add Employee {% endblock title %}
+{% block title %} 
+
+{% if obj %}
+    Edit Employee 
+{% else %}
+    Add Employee
+{% endif %}
+{% endblock title %}
 
 {% load static %}
 
@@ -25,7 +32,13 @@
                 <div class="card-header bg-white border-0">
                     <div class="row align-items-center">
                         <div class="col-8">
-                            <h3 class="mb-0">Add Employee</h3>
+                            <h3 class="mb-0">
+                                {% if obj %}
+                                    Edit Employee 
+                                {% else %}
+                                    Add Employee
+                                {% endif %}
+                            </h3>
                         </div>
                         <div class="col-4 text-right">
                         </div>
@@ -52,7 +65,7 @@
                                 <span aria-hidden="true">×</span>
                             </button> 
                             {{ Message }}
-                            <span id="employee_error_msg"></span>
+                            <span id="employee_msg"></span>
                         </div>
                         </h6>
 
@@ -61,7 +74,7 @@
                                 <div class="form-group">
                                     <label class="form-control-label">User Name*</label>
                                     <input type="text" class="form-control form-control-alternative"
-                                        value="{{username}}" name="username" ng-model="employee.username">
+                                     name="username" ng-model="employee.username">
                                 </div>
                             </div>
 
@@ -69,7 +82,7 @@
                                 <div class="form-group">
                                     <label class="form-control-label">First Name*</label>
                                     <input type="text" class="form-control form-control-alternative"
-                                        value="{{firstname}}" name="firstname" ng-model="employee.firstname">
+                                        name="first_name" ng-model="employee.first_name">
                                 </div>
                             </div>
 
@@ -77,7 +90,7 @@
                                 <div class="form-group">
                                     <label class="form-control-label">Last Name*</label>
                                     <input type="text" class="form-control form-control-alternative"
-                                        value="{{lastname}}" name="lastname" ng-model="employee.lastname">
+                                        name="last_name" ng-model="employee.last_name">
                                 </div>
                             </div>
                         </div>
@@ -87,7 +100,7 @@
                                 <div class="form-group">
                                     <label class="form-control-label">Email*</label>
                                     <input type="text" class="form-control form-control-alternative"
-                                        value="{{email}}" name="email" ng-model="employee.email">
+                                    name="email" ng-model="employee.email">
                                 </div>
                             </div>
 
@@ -95,7 +108,7 @@
                                 <div class="form-group">
                                     <label class="form-control-label">Mobile*</label>
                                     <input type="text" class="form-control form-control-alternative"
-                                        value="{{mobile}}" name="mobile" ng-model="employee.mobile">
+                                     name="mobile" ng-model="employee.mobile">
                                 </div>
                             </div>
 
@@ -103,7 +116,7 @@
                                 <div class="form-group">
                                     <label class="form-control-label">Position*</label>
                                     <input type="text" class="form-control form-control-alternative"
-                                        value="{{position}}" name="position" ng-model="employee.position">
+                                     ng-model="employee.position__title">
                                 </div>
                             </div>
 
@@ -120,6 +133,7 @@
         </div>
     </div>
 
+{{ obj|json_script:"obj" }}
 </div>
 </body>
 

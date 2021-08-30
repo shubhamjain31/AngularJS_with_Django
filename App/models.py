@@ -9,6 +9,7 @@ class Position(models.Model):
         return self.title
 
 class Employee(models.Model):
+    username            = models.CharField(max_length=100, blank=True, null=True)
     fullname 			= models.CharField(max_length=100, blank=True, null=True)
     first_name			= models.CharField(max_length=64, blank=True, null=True)
     last_name			= models.CharField(max_length=64, blank=True, null=True)
