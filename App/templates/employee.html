@@ -1,6 +1,8 @@
 {% extends 'base.html' %}
 {% block title %} Add Employee {% endblock title %}
 
+{% load static %}
+
 {% block content %}
 
 <body data-ng-app="app">
@@ -43,7 +45,16 @@
                     {% endif %}
                     <form ng-submit="submit()">{% csrf_token %}
 
-                        <h6 class="heading-small text-white font-italic mb-4">Employee information</h6>
+                        <h6 class="heading-small text-white font-italic mb-4">Employee information  
+
+                        <div class="alert alert-warning" role="alert" ng-show="Message">
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">×</span>
+                            </button> 
+                            {{ Message }}
+                            <span id="employee_error_msg"></span>
+                        </div>
+                        </h6>
 
                         <div class="row text-white">
                             <div class="col-lg-4">
@@ -88,6 +99,14 @@
                                 </div>
                             </div>
 
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                    <label class="form-control-label">Position*</label>
+                                    <input type="text" class="form-control form-control-alternative"
+                                        value="{{position}}" name="position" ng-model="employee.position">
+                                </div>
+                            </div>
+
                             
                         </div>
 
@@ -108,33 +127,5 @@
 
 <!-- Specific JS goes HERE -->
 {% block javascripts %}
-<script>
-    var myApp = angular.module('app', [], function($httpProvider){
-      $httpProvider.defaults.xsrfCookieName = 'csrftoken';
-      $httpProvider.defaults.xsrfHeaderName = 'X-CSRFToken';
-    });
-
-    myApp.controller("MainController", function ($scope, $http) {
-
-        $scope.submit = function() {
-            var postReq = {
-                method: 'POST',
-                url: '/add/employee/',
-                data: $scope.employee,
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            };
-
-            $http(postReq).then(function (response) {
-                if (response.data.saved) {
-                }
-               
-            }, function (error) {
-            });
-        }
-
-    });
-
-</script>
+<script src="/static/js/employee.js"></script>
 {% endblock javascripts %}
