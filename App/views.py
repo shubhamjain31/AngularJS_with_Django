@@ -38,7 +38,7 @@ def employee_add(request):
 		lastname 	= data.get('last_name')
 		email 		= data.get('email')
 		mobile 		= data.get('mobile')
-		position 	= data.get('position')
+		position 	= data.get('position__title')
 
 		if username is None:
 			msg = "Please Enter Username !"
@@ -81,6 +81,7 @@ def employee_add(request):
 
 	return render(request, "employee.html")
 
+@csrf_exempt
 def employee_edit(request, id):
 
 	# obj = get_object_or_404(Employee, id = id)
@@ -97,25 +98,25 @@ def employee_edit(request, id):
 								'position__title',
 								'id')
 
-	if request.method == "POST":
+	if request.method == "PUT":
 		data 		= json.loads(request.body)
 
 		username 	= data.get('username')
-		firstname 	= data.get('first_name')
-		lastname 	= data.get('last_name')
+		first_name 	= data.get('first_name')
+		last_name 	= data.get('last_name')
 		email 		= data.get('email')
 		mobile 		= data.get('mobile')
-		position 	= data.get('position')
+		position 	= data.get('position__title')
 
 		if username is None:
 			msg = "Please Enter Username !"
 			return JsonResponse({'error':True, 'msg':msg})
 
-		if firstname is None:
+		if first_name is None:
 			msg = "Please Enter Firstname !"
 			return JsonResponse({'error':True, 'msg':msg})
 
-		if lastname is None:
+		if last_name is None:
 			msg = "Please Enter Lastname !"
 			return JsonResponse({'error':True, 'msg':msg})
 
@@ -127,8 +128,21 @@ def employee_edit(request, id):
 			msg = "Please Enter Position !"
 			return JsonResponse({'error':True, 'msg':msg})
 
-		fname = firstname.capitalize()
-		lname = lastname.capitalize()
+		fname = first_name.capitalize()
+		lname = last_name.capitalize()
+
+		update_obj = employee_data.first()
+
+		Employee.objects.filter(id=id).update(username 	= username,
+											fullname 	= fname + ' ' + lname,
+											first_name 	= fname,
+											last_name 	= lname,
+											email 		= email,
+											mobile 		= mobile
+											)
+
+		msg = "Employee Updated !"
+		return JsonResponse({'saved':True, 'msg':msg})
 
 	params = {"obj":list(obj)}
 	return render(request, "employee.html", params)

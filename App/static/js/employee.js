@@ -12,15 +12,30 @@ var myApp = angular.module('app', [], function($httpProvider){
         const data = JSON.parse(document.getElementById('obj').textContent);
         $scope.employee = data[0]
 
+
         $scope.submit = function() {
-            var postReq = {
-                method: 'POST',
-                url: '/add/employee/',
-                data: $scope.employee,
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            };
+            if(!data){
+
+                var postReq = {
+                    method: 'POST',
+                    url: '/add/employee/',
+                    data: $scope.employee,
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                };
+            }
+            else{
+                id_ = $scope.employee.id
+                var postReq = {
+                    method: 'PUT',
+                    url: '/edit/employee/'+id_,
+                    data: $scope.employee,
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                };
+            }
 
             $http(postReq).then(function (response) {
                 $scope.employee = {}
