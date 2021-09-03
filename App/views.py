@@ -151,7 +151,15 @@ def employee_edit(request, id):
 	return render(request, "employee.html", params)
 
 @csrf_exempt
-def employee_delete(request):
+def employee_delete(request, id=None):
+	last = request.META.get('HTTP_REFERER', None)
+
+	if id_ != 0:
+		obj = Employee.objects.get(id=id)
+		obj.delete()
+		messages.success(request, 'Employee Deleted !')
+		return redirect(last)
+
 	if request.method == "DELETE":
 		data 		= json.loads(request.body)
 

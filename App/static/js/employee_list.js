@@ -12,7 +12,7 @@ var myApp = angular.module('app', []).config(function($interpolateProvider) {
             id_ = id['0'][0]
             var postReq = {
                 method: 'DELETE',
-                url: '/delete/employee/',
+                url: '/delete/employee/'+0,
                 data: {id:id_},
                 headers: {
                     'Content-Type': 'application/json'
