@@ -4,6 +4,7 @@ from .models import Employee, Position
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib import messages
 from django.http import JsonResponse, HttpResponse
+from django.db.models import Q
 
 import uuid
 import json
@@ -162,3 +163,15 @@ def employee_delete(request):
 		return JsonResponse({'deleted':True, 'msg':msg})
 
 	return render(request, "employee_list.html")
+
+@csrf_exempt
+def search(request):
+	if request.method == "POST":
+		search 		= request.POST.get('search')
+
+		obj = Employee.objects.filter(Q(first_name__icontains=search) | Q(last_name__icontains=search))
+		print(obj)
+		
+		# return render(request, "search.html")
+
+	return render(request, "search.html", {'obj':obj})
