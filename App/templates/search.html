@@ -105,7 +105,7 @@
                               
                               <td>
                                 <a type="button" class="btn btn-info btn-sm" href="/edit/employee/{{employee.pk}}">Edit</a>&nbsp;&nbsp;&nbsp;&nbsp;
-                                <button type="button" class="btn btn-danger btn-sm" ng-click="remove({{employee.pk}}, {{ forloop.counter }})">Delete</button>
+                                <a type="button" class="btn btn-danger btn-sm" href="/delete/employee/{{employee.pk}}">Delete</a>
                               </td>
                               {% endfor %}
                           </tr>
