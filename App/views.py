@@ -3,13 +3,12 @@ from .models import Employee, Position
 
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib import messages
-from django.http import JsonResponse, HttpResponse
+from django.http import JsonResponse
 from django.db.models import Q
 
 import uuid
 import json
 from validators import is_invalid
-from django.core import serializers
 
 # Create your views here.
 
@@ -64,7 +63,7 @@ def employee_add(request):
 		fname = firstname.capitalize()
 		lname = lastname.capitalize()
 
-		position_obj = Position.objects.create(title=position.capitalize())
+		position_obj = Position.objects.create(title=position.title())
 
 		Employee.objects.create(
 								username    = username,
@@ -142,7 +141,7 @@ def employee_edit(request, id):
 											mobile 		= mobile
 											)
 
-		Position.objects.filter(pk=update_obj.position.id).update(title=position)
+		Position.objects.filter(pk=update_obj.position.id).update(title=position.title())
 
 		msg = "Employee Updated !"
 		return JsonResponse({'saved':True, 'msg':msg})
@@ -176,8 +175,5 @@ def search(request):
 		search 		= request.POST.get('search')
 
 		obj = Employee.objects.filter(Q(first_name__icontains=search) | Q(last_name__icontains=search))
-		print(obj)
-		
-		# return render(request, "search.html")
 
 	return render(request, "search.html", {'obj':obj})

@@ -72,6 +72,19 @@
                       </thead>
                       
                       <tbody class="text-center text-white">
+                          {% if not obj %}
+                          <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td><h4>No Data Found</h4></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                          </tr>
+                          {% else %}
                           {% for employee in obj %}
                           <tr>
                               <td>
@@ -100,7 +113,7 @@
                                   {{employee.position}}
                               </td>
                               <td>
-                                  {{employee.joining_date|date:""}}
+                                  {{employee.joining_date}}
                               </td>
                               
                               <td>
@@ -109,6 +122,7 @@
                               </td>
                               {% endfor %}
                           </tr>
+                          {% endif %}
                         
                       </tbody>
                   </table>
