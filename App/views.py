@@ -174,6 +174,9 @@ def search(request):
 	if request.method == "POST":
 		search 		= request.POST.get('search')
 
-		obj = Employee.objects.filter(Q(first_name__icontains=search) | Q(last_name__icontains=search))
+		if is_invalid(search):
+			obj = []
+		else:
+			obj = Employee.objects.filter(Q(first_name__icontains=search) | Q(last_name__icontains=search))
 
 	return render(request, "search.html", {'obj':obj})
